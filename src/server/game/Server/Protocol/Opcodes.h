@@ -921,7 +921,6 @@ enum Opcodes
     CMSG_MAELSTROM_INVALIDATE_CACHE                  = 0x10155, //
     SMSG_FLIGHT_SPLINE_SYNC                          = 0x1BFAC, //
     CMSG_SET_TAXI_BENCHMARK_MODE                     = 0x173C4, //
-    SMSG_JOINED_BATTLEGROUND_QUEUE                   = 0x1090E, //
     SMSG_REALM_SPLIT                                 = 0x125EC, //
     CMSG_REALM_SPLIT                                 = 0x160AC, //
     CMSG_MOVE_CHNG_TRANSPORT                         = 0x10158, //

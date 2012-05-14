@@ -1345,6 +1345,7 @@ enum Opcodes
     SMSG_GUILD_CRITERIA_DELETED                      = 0x1000C, //
     SMSG_GUILD_CRITERIA_DATA                         = 0x1400E, //
     CMSG_RETURN_TO_GRAVEYARD                         = 0x10593, //
+    CMSG_LOG_DISCONNECT                              = 0x10594, //
     NUM_MSG_TYPES                                    = 0x102B8  // last unknown opcode + 1.
 };
 

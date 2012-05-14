@@ -268,19 +268,21 @@ int WorldSocket::open (void *a)
 
     m_Address = remote_addr.get_host_addr();
 
+    WorldPacket packet(MSG_VERIFY_CONNECTIVITY, 46); 
+    packet << "RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"; 
+
+    if (SendPacket(packet) == -1)
+        return -1;
+
     // Send startup packet.
-    WorldPacket packet (SMSG_AUTH_CHALLENGE, 37);
+    WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
 
-    BigNumber seed1;
-    seed1.SetRand(16 * 8);
-    packet.append(seed1.AsByteArray(16), 16);               // new encryption seeds
+    for (uint32 i = 0; i < 8; i++)
+        packet << uint32(0);
 
+    packet << m_Seed;
     packet << uint8(1);
-    packet << uint32(m_Seed);
-
-    BigNumber seed2;
-    seed2.SetRand(16 * 8);
-    packet.append(seed2.AsByteArray(16), 16);               // new encryption seeds
+    return SendPacket(packet);
 
     if (SendPacket(packet) == -1)
         return -1;
@@ -736,6 +738,10 @@ int WorldSocket::ProcessIncoming (WorldPacket* new_pct)
                 sLog->outStaticDebug ("CMSG_KEEP_ALIVE , size: " UI64FMTD, uint64(new_pct->size()));
                 sScriptMgr->OnPacketReceive(this, WorldPacket(*new_pct));
                 return 0;
+            case CMSG_LOG_DISCONNECT:
+                sLog->outStaticDebug("CMSG_LOG_DISCONNECT , size: " UI64FMTD, uint64(new_pct->size()));
+                sScriptMgr->OnPacketReceive(this, WorldPacket(*new_pct));
+                return 0;
             default:
             {
                 ACE_GUARD_RETURN (LockType, Guard, m_SessionLock, -1);
@@ -755,6 +761,17 @@ int WorldSocket::ProcessIncoming (WorldPacket* new_pct)
                 }
                 else
                 {
+                    if(opcode == 0)
+                    {
+                        // 4.1 plaintext init message BS
+                        std::string msg;
+                        (*new_pct) >> msg;
+                        if(!msg.empty() && msg.compare(std::string("D OF WARCRAFT CONNECTION - CLIENT TO SERVER")) == 0)
+                        {
+                            // just ignore
+                            return 0;
+                        }
+                    }
                     sLog->outError ("WorldSocket::ProcessIncoming: Client not authed opcode = %u", uint32(opcode));
                     return -1;
                 }

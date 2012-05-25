@@ -48,7 +48,7 @@ enum Opcodes
     CMSG_CHAR_ENUM                                   = 0x16AA4, //
     CMSG_CHAR_DELETE                                 = 0x13B84, //
     SMSG_CHAR_CREATE                                 = 0x1F7EC, //
-    SMSG_CHAR_ENUM                                   = 0x1ECCC, //
+    SMSG_CHAR_ENUM                                   = 0x10B0,  // 4.3.4 15595
     SMSG_CHAR_DELETE                                 = 0x1BC80, //
     CMSG_PLAYER_LOGIN                                = 0x05B1,  // 4.3.4 15595
     SMSG_NEW_WORLD                                   = 0x1451E, //
@@ -396,14 +396,14 @@ enum Opcodes
     CMSG_PET_ABANDON                                 = 0x1A480, //
     CMSG_PET_RENAME                                  = 0x138E8, //
     SMSG_PET_NAME_INVALID                            = 0x11457, //
-    SMSG_PET_SPELLS                                  = 0x1B780, //
+    SMSG_PET_SPELLS                                  = 0x4114,  // 4.3.4 15595
     SMSG_PET_MODE                                    = 0x2235,  // 4.3.4 15595
-    CMSG_GOSSIP_HELLO                                = 0x174C8, //
+    CMSG_GOSSIP_HELLO                                = 0x4525,  // 4.3.4 15595
     CMSG_GOSSIP_SELECT_OPTION                        = 0x1FF88, //
-    SMSG_GOSSIP_MESSAGE                              = 0x1BBC8, //
-    SMSG_GOSSIP_COMPLETE                             = 0x1F0AC, //
+    SMSG_GOSSIP_MESSAGE                              = 0x2035,  // 4.3.4 15595
+    SMSG_GOSSIP_COMPLETE                             = 0x0806,  // 4.3.4 15595
     CMSG_NPC_TEXT_QUERY                              = 0x1A2EC, //
-    SMSG_NPC_TEXT_UPDATE                             = 0x1B2AC, //
+    SMSG_NPC_TEXT_UPDATE                             = 0x4436,  // 4.3.4 15595
     SMSG_NPC_WONT_TALK                               = 0x10061, //
     CMSG_QUESTGIVER_STATUS_QUERY                     = 0x1FDEC, //
     SMSG_QUESTGIVER_STATUS                           = 0x17988, //
@@ -645,7 +645,7 @@ enum Opcodes
     CMSG_GROUP_CHANGE_SUB_GROUP                      = 0x13A80, //
     CMSG_REQUEST_PARTY_MEMBER_STATS                  = 0x170C8, //
     CMSG_GROUP_SWAP_SUB_GROUP                        = 0x131C8, //
-    CMSG_RESET_FACTION_CHEAT                         = 0x100CD, //
+    CMSG_RESET_FACTION_CHEAT                         = 0x4469,  // 4.3.4 15595
     CMSG_AUTOSTORE_BANK_ITEM                         = 0x1F2AC, //
     CMSG_AUTOBANK_ITEM                               = 0x166E4, //
     MSG_QUERY_NEXT_MAIL_TIME                         = 0x125C8, //
@@ -922,7 +922,7 @@ enum Opcodes
     SMSG_FLIGHT_SPLINE_SYNC                          = 0x1BFAC, //
     CMSG_SET_TAXI_BENCHMARK_MODE                     = 0x173C4, //
     SMSG_REALM_SPLIT                                 = 0x125EC, //
-    CMSG_REALM_SPLIT                                 = 0x160AC, //
+    CMSG_REALM_SPLIT                                 = 0x2906,  // 4.3.4 15595
     CMSG_MOVE_CHNG_TRANSPORT                         = 0x10158, //
     MSG_PARTY_ASSIGNMENT                             = 0x128AC, //
     SMSG_OFFER_PETITION_ERROR                        = 0x17DC0, //
@@ -1271,7 +1271,7 @@ enum Opcodes
     SMSG_TALENTS_INVOLUNTARILY_RESET                 = 0x12A84, //
     SMSG_UNKNOWN_1276                                = 0x1023A, //
     SMSG_LOOT_SLOT_CHANGED                           = 0x131EC, //
-    CMSG_READY_FOR_ACCOUNT_DATA_TIMES                = 0x17DA8, //
+    CMSG_READY_FOR_ACCOUNT_DATA_TIMES                = 0x2B16,  // 4.3.4 15595
     CMSG_QUERY_QUESTS_COMPLETED                      = 0x1ECE8, //
     SMSG_QUERY_QUESTS_COMPLETED_RESPONSE             = 0x1F1E8, //
     CMSG_GM_REPORT_LAG                               = 0x13FA0, //
@@ -1347,6 +1347,7 @@ enum Opcodes
     CMSG_RETURN_TO_GRAVEYARD                         = 0x10593, //
     CMSG_LOG_DISCONNECT                              = 0x10594, //
     CMSG_LOAD_SCREEN                                 = 0x2422,  // 4.3.4 15595
+    CMSG_REDIRECTION_AUTH_PROOF                      = 0x044D,  // 4.3.4 15595
     NUM_MSG_TYPES                                    = 0x102B8  // last unknown opcode + 1.
 };
 

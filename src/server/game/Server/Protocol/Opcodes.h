@@ -1346,8 +1346,8 @@ enum Opcodes
     SMSG_GUILD_CRITERIA_DATA                         = 0x1400E, //
     CMSG_RETURN_TO_GRAVEYARD                         = 0x10593, //
     CMSG_LOG_DISCONNECT                              = 0x10594, //
-    CMSG_LOAD_SCREEN                                 = 0x2422,  // 4.3.4 15595(New)
-    CMSG_REDIRECTION_AUTH_PROOF                      = 0x044D,  // 4.3.4 15595(New)
+    CMSG_LOAD_SCREEN                                 = 0x2422,  // 4.3.4 15595
+    CMSG_REDIRECTION_AUTH_PROOF                      = 0x044D,  // 4.3.4 15595
     NUM_MSG_TYPES                                    = 0x102B8  // last unknown opcode + 1.
 };
 

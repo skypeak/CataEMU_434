@@ -433,8 +433,8 @@ enum Opcodes
     CMSG_QUEST_CONFIRM_ACCEPT                        = 0x16FCC, //
     SMSG_QUEST_CONFIRM_ACCEPT                        = 0x17C8C, //
     CMSG_PUSHQUESTTOPARTY                            = 0x129E8, //
-    CMSG_LIST_INVENTORY                              = 0x1EDC8, //
-    SMSG_LIST_INVENTORY                              = 0x1F8AC, //
+    CMSG_LIST_INVENTORY                              = 0x02806, // 4.3.4 15595
+    SMSG_LIST_INVENTORY                              = 0x07CB0, // 4.3.4 15595
     CMSG_SELL_ITEM                                   = 0x163A4, //
     SMSG_SELL_ITEM                                   = 0x16CE8, //
     CMSG_BUY_ITEM                                    = 0x1EA84, //
@@ -450,9 +450,9 @@ enum Opcodes
     CMSG_ACTIVATETAXI                                = 0x139A4, //
     SMSG_ACTIVATETAXIREPLY                           = 0x17A84, //
     SMSG_NEW_TAXI_PATH                               = 0x1E5E4, //
-    CMSG_TRAINER_LIST                                = 0x1E5AC, //
+    CMSG_TRAINER_LIST                                = 0x02336, // 4.3.4 15595
     SMSG_TRAINER_LIST                                = 0x04414, // 4.3.4 15595
-    CMSG_TRAINER_BUY_SPELL                           = 0x1FDC8, //
+    CMSG_TRAINER_BUY_SPELL                           = 0x04415, // 4.3.4 15595
     SMSG_TRAINER_BUY_RESULT                          = 0x16DEC, //
     CMSG_BINDER_ACTIVATE                             = 0x1A48C, //
     SMSG_PLAYERBINDERROR                             = 0x1EEC8, //
@@ -1191,8 +1191,8 @@ enum Opcodes
     SMSG_PET_UPDATE_COMBO_POINTS                     = 0x17588, //
     CMSG_ENABLETAXI                                  = 0x1328C, //
     SMSG_PRE_RESURRECT                               = 0x166C4, //
-    SMSG_AURA_UPDATE_ALL                             = 0x137E0, //
-    SMSG_AURA_UPDATE                                 = 0x06916, // 4.3.4 15595
+    SMSG_AURA_UPDATE_ALL                             = 0x06916, // 4.3.4 15595
+    SMSG_AURA_UPDATE                                 = 0x04707, // 4.3.4 15595
     CMSG_FLOOD_GRACE_CHEAT                           = 0x101F2, //
     SMSG_SERVER_FIRST_ACHIEVEMENT                    = 0x168CC, //
     SMSG_PET_LEARNED_SPELL                           = 0x1B3C4, //

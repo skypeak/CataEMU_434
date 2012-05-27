@@ -405,8 +405,8 @@ enum Opcodes
     CMSG_NPC_TEXT_QUERY                              = 0x1A2EC, //
     SMSG_NPC_TEXT_UPDATE                             = 0x04436, // 4.3.4 15595
     SMSG_NPC_WONT_TALK                               = 0x10061, //
-    CMSG_QUESTGIVER_STATUS_QUERY                     = 0x1FDEC, //
-    SMSG_QUESTGIVER_STATUS                           = 0x17988, //
+    CMSG_QUESTGIVER_STATUS_QUERY                     = 0x04407, // 4.3.4 15595
+    SMSG_QUESTGIVER_STATUS                           = 0x02115, // 4.3.4 15595
     CMSG_QUESTGIVER_HELLO                            = 0x136AC, //
     SMSG_QUESTGIVER_QUEST_LIST                       = 0x12B88, //
     CMSG_QUESTGIVER_QUERY_QUEST                      = 0x12CC0, //
@@ -479,8 +479,8 @@ enum Opcodes
     SMSG_NOTIFICATION                                = 0x1BC88, //
     CMSG_PLAYED_TIME                                 = 0x1F480, //
     SMSG_PLAYED_TIME                                 = 0x1E4C8, //
-    CMSG_QUERY_TIME                                  = 0x1B1C0, //
-    SMSG_QUERY_TIME_RESPONSE                         = 0x1F1AC, //
+    CMSG_QUERY_TIME                                  = 0x00A36, // 4.3.4 15595
+    SMSG_QUERY_TIME_RESPONSE                         = 0x02124, // 4.3.4 15595
     SMSG_LOG_XPGAIN                                  = 0x04514, // 4.3.4 15595
     SMSG_AURACASTLOG                                 = 0x10080, //
     CMSG_RECLAIM_CORPSE                              = 0x17CC8, //
@@ -1321,8 +1321,8 @@ enum Opcodes
     SMSG_UNKNOWN_65508                               = 0x1FFE4, //
     SMSG_GUILD_ACHIEVEMENT_EARNED                    = 0x10D5C, //
     SMSG_GUILD_ACHIEVEMENT_DATA                      = 0x1491E, //
-    CMSG_UI_TIME_REQUEST                             = 0x13FA8, //
-    SMSG_UI_TIME                                     = 0x1618C, //
+    CMSG_UI_TIME_REQUEST                             = 0x04605, // 4.3.4 15595
+    SMSG_UI_TIME                                     = 0x04A14, // 4.3.4 15595
     SMSG_UNKNOWN_1330                                = 0x1618C, //
     CMSG_REFORGE_ITEM                                = 0x10313, //
     CMSG_COMPLETED_ARTIFACTS                         = 0x10A13, //

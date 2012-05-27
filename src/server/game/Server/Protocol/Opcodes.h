@@ -44,10 +44,10 @@ enum Opcodes
     SMSG_PETGODMODE                                  = 0x1F2CC, //
     SMSG_GODMODE                                     = 0x123EC, //
     SMSG_DESTRUCTIBLE_BUILDING_DAMAGE                = 0x1A0E0, //
-    CMSG_CHAR_CREATE                                 = 0x17EEC, //
+    CMSG_CHAR_CREATE                                 = 0x04A36, // 4.3.4 15595
     CMSG_CHAR_ENUM                                   = 0x00502, // 4.3.4 15595
     CMSG_CHAR_DELETE                                 = 0x13B84, //
-    SMSG_CHAR_CREATE                                 = 0x1F7EC, //
+    SMSG_CHAR_CREATE                                 = 0x02D05, // 4.3.4 15595
     SMSG_CHAR_ENUM                                   = 0x010B0, // 4.3.4 15595
     SMSG_CHAR_DELETE                                 = 0x1BC80, //
     CMSG_PLAYER_LOGIN                                = 0x005B1, // 4.3.4 15595
@@ -316,8 +316,8 @@ enum Opcodes
     CMSG_SET_FACTION_CHEAT                           = 0x10056, //
     SMSG_SET_PROFICIENCY                             = 0x06207, // 4.3.4 15595
     CMSG_SET_ACTION_BUTTON                           = 0x172E8, //
-    SMSG_ACTION_BUTTONS                              = 0x12CCC, //
-    SMSG_INITIAL_SPELLS                              = 0x16584, //
+    SMSG_ACTION_BUTTONS                              = 0x038B5, // 4.3.4 15595 -- NOT SURE
+    SMSG_INITIAL_SPELLS                              = 0x00104, // 4.3.4 15595
     SMSG_LEARNED_SPELL                               = 0x176E8, //
     SMSG_SUPERCEDED_SPELL                            = 0x1E8E4, //
     CMSG_NEW_SPELL_SLOT                              = 0x10057, //
@@ -623,7 +623,7 @@ enum Opcodes
     CMSG_AUCTION_LIST_BIDDER_ITEMS                   = 0x121C0, //
     SMSG_AUCTION_BIDDER_LIST_RESULT                  = 0x1A1A8, //
     SMSG_SET_FLAT_SPELL_MODIFIER                     = 0x12BC8, //
-    SMSG_SET_PCT_SPELL_MODIFIER                      = 0x1A6E8, //
+    SMSG_SET_PCT_SPELL_MODIFIER                      = 0x02834, // 4.3.4 15595
     SMSG_CORPSE_RECLAIM_DELAY                        = 0x131C4, //
     CMSG_SET_ACTIVE_MOVER                            = 0x16CA0, //
     CMSG_PET_CANCEL_AURA                             = 0x1F6C0, //

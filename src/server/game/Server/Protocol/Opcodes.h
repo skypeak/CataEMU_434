@@ -508,7 +508,7 @@ enum Opcodes
     MSG_GM_BIND_OTHER                                = 0x1008B, //
     MSG_GM_SUMMON                                    = 0x1008C, //
     SMSG_ITEM_TIME_UPDATE                            = 0x166A4, //
-    SMSG_ITEM_ENCHANT_TIME_UPDATE                    = 0x166A0, //
+    SMSG_ITEM_ENCHANT_TIME_UPDATE                    = 0x00F27, // 4.3.4 15595
     SMSG_AUTH_CHALLENGE                              = 0x04542, // 4.3.4 15595
     CMSG_AUTH_SESSION                                = 0x00449, // 4.3.4 15595
     SMSG_AUTH_RESPONSE                               = 0x05DB6, // 4.3.4 15595
@@ -622,7 +622,7 @@ enum Opcodes
     SMSG_SPELLORDAMAGE_IMMUNE                        = 0x173C8, //
     CMSG_AUCTION_LIST_BIDDER_ITEMS                   = 0x121C0, //
     SMSG_AUCTION_BIDDER_LIST_RESULT                  = 0x1A1A8, //
-    SMSG_SET_FLAT_SPELL_MODIFIER                     = 0x12BC8, //
+    SMSG_SET_FLAT_SPELL_MODIFIER                     = 0x00224, // 4.3.4 15595
     SMSG_SET_PCT_SPELL_MODIFIER                      = 0x02834, // 4.3.4 15595
     SMSG_CORPSE_RECLAIM_DELAY                        = 0x131C4, //
     CMSG_SET_ACTIVE_MOVER                            = 0x16CA0, //

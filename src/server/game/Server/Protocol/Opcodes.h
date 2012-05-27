@@ -45,7 +45,7 @@ enum Opcodes
     SMSG_GODMODE                                     = 0x123EC, //
     SMSG_DESTRUCTIBLE_BUILDING_DAMAGE                = 0x1A0E0, //
     CMSG_CHAR_CREATE                                 = 0x17EEC, //
-    CMSG_CHAR_ENUM                                   = 0x16AA4, //
+    CMSG_CHAR_ENUM                                   = 0x00502, // 4.3.4 15595
     CMSG_CHAR_DELETE                                 = 0x13B84, //
     SMSG_CHAR_CREATE                                 = 0x1F7EC, //
     SMSG_CHAR_ENUM                                   = 0x010B0, // 4.3.4 15595
@@ -79,12 +79,12 @@ enum Opcodes
     SMSG_DB_REPLY                                    = 0x038A4, // 4.3.4 15595
     SMSG_HOTFIX_NOTIFY_BLOP                          = 0x14C1E, //
     SMSG_HOTFIX_NOTIFY                               = 0x14C0E, //
-    CMSG_REQUEST_HOTFIX                              = 0x18589, //
+    CMSG_REQUEST_HOTFIX                              = 0x02401, // 4.3.4 15595
     CMSG_PAGE_TEXT_QUERY                             = 0x1AC8C, //
     SMSG_PAGE_TEXT_QUERY_RESPONSE                    = 0x1B084, //
     CMSG_QUEST_QUERY                                 = 0x1EFE8, //
     SMSG_QUEST_QUERY_RESPONSE                        = 0x06936, // 4.3.4 15595
-    CMSG_GAMEOBJECT_QUERY                            = 0x172A0, //
+    CMSG_GAMEOBJECT_QUERY                            = 0x04017, // 4.3.4 15595
     SMSG_GAMEOBJECT_QUERY_RESPONSE                   = 0x00915, // 4.3.4 15595
     CMSG_CREATURE_QUERY                              = 0x02706, // 4.3.4 15595
     SMSG_CREATURE_QUERY_RESPONSE                     = 0x06024, // 4.3.4 15595
@@ -314,7 +314,7 @@ enum Opcodes
     SMSG_SET_FACTION_STANDING                        = 0x1718C, //
     CMSG_SET_FACTION_ATWAR                           = 0x10055, //
     CMSG_SET_FACTION_CHEAT                           = 0x10056, //
-    SMSG_SET_PROFICIENCY                             = 0x1BBA8, //
+    SMSG_SET_PROFICIENCY                             = 0x06207, // 4.3.4 15595
     CMSG_SET_ACTION_BUTTON                           = 0x172E8, //
     SMSG_ACTION_BUTTONS                              = 0x12CCC, //
     SMSG_INITIAL_SPELLS                              = 0x16584, //
@@ -360,7 +360,7 @@ enum Opcodes
     SMSG_BREAK_TARGET                                = 0x12488, //
     CMSG_SAVE_PLAYER                                 = 0x1005C, //
     CMSG_SETDEATHBINDPOINT                           = 0x1A94E, //
-    SMSG_BINDPOINTUPDATE                             = 0x1A9A0, //
+    SMSG_BINDPOINTUPDATE                             = 0x00527, // 4.3.4 15595
     CMSG_GETDEATHBINDZONE                            = 0x1005E, //
     SMSG_BINDZONEREPLY                               = 0x1ACAC, //
     SMSG_PLAYERBOUND                                 = 0x16BCC, //
@@ -751,7 +751,7 @@ enum Opcodes
     CMSG_AREA_SPIRIT_HEALER_QUEUE                    = 0x1F388, //
     SMSG_AREA_SPIRIT_HEALER_TIME                     = 0x16D80, //
     CMSG_GM_UNTEACH                                  = 0x100FD, //
-    SMSG_WARDEN_DATA                                 = 0x1F8A0, //
+    SMSG_WARDEN_DATA                                 = 0x031A0, // 4.3.4 15595
     CMSG_WARDEN_DATA                                 = 0x025A2, // 4.3.4 15595
     SMSG_GROUP_JOINED_BATTLEGROUND                   = 0x10D1E, //
     CMSG_BATTLEGROUND_PLAYER_POSITIONS               = 0x10293, //
@@ -921,7 +921,7 @@ enum Opcodes
     CMSG_MAELSTROM_INVALIDATE_CACHE                  = 0x10155, //
     SMSG_FLIGHT_SPLINE_SYNC                          = 0x1BFAC, //
     CMSG_SET_TAXI_BENCHMARK_MODE                     = 0x173C4, //
-    SMSG_REALM_SPLIT                                 = 0x125EC, //
+    SMSG_REALM_SPLIT                                 = 0x02714, // 4.3.4 15595
     CMSG_REALM_SPLIT                                 = 0x02906, // 4.3.4 15595
     CMSG_MOVE_CHNG_TRANSPORT                         = 0x10158, //
     MSG_PARTY_ASSIGNMENT                             = 0x128AC, //
@@ -1170,7 +1170,7 @@ enum Opcodes
     SMSG_ALL_ACHIEVEMENT_DATA                        = 0x058B1, // 4.3.4 15595
     CMSG_FORCE_SAY_CHEAT                             = 0x101E7, //
     SMSG_HEALTH_UPDATE                               = 0x12AA8, //
-    SMSG_POWER_UPDATE                                = 0x165E8, //
+    SMSG_POWER_UPDATE                                = 0x04A07, // 4.3.4 15595
     CMSG_GAMEOBJ_REPORT_USE                          = 0x123A0, //
     SMSG_HIGHEST_THREAT_UPDATE                       = 0x13F7E, //
     SMSG_THREAT_UPDATE                               = 0x1B480, //

@@ -82,7 +82,7 @@ enum Opcodes
     CMSG_REQUEST_HOTFIX                              = 0x02401, // 4.3.4 15595
     CMSG_PAGE_TEXT_QUERY                             = 0x1AC8C, //
     SMSG_PAGE_TEXT_QUERY_RESPONSE                    = 0x1B084, //
-    CMSG_QUEST_QUERY                                 = 0x1EFE8, //
+    CMSG_QUEST_QUERY                                 = 0x00D06, // 4.3.4 15595
     SMSG_QUEST_QUERY_RESPONSE                        = 0x06936, // 4.3.4 15595
     CMSG_GAMEOBJECT_QUERY                            = 0x04017, // 4.3.4 15595
     SMSG_GAMEOBJECT_QUERY_RESPONSE                   = 0x00915, // 4.3.4 15595
@@ -517,7 +517,7 @@ enum Opcodes
     MSG_SAVE_GUILD_EMBLEM                            = 0x131AC, //
     MSG_TABARDVENDOR_ACTIVATE                        = 0x12C80, //
     SMSG_PLAY_SPELL_VISUAL                           = 0x1FF8C, //
-    CMSG_ZONEUPDATE                                  = 0x133E4, //
+    CMSG_ZONEUPDATE                                  = 0x04f37, // 4.3.4 15595
     SMSG_PARTYKILLLOG                                = 0x1AB84, //
     SMSG_COMPRESSED_UPDATE_OBJECT                    = 0x1EAC0, //
     SMSG_PLAY_SPELL_IMPACT                           = 0x1A3E4, //
@@ -709,7 +709,7 @@ enum Opcodes
     CMSG_SET_EXPLORATION                             = 0x100E1, //
     CMSG_SET_ACTIONBAR_TOGGLES                       = 0x132C4, //
     MSG_PETITION_RENAME                              = 0x170C0, //
-    SMSG_INIT_WORLD_STATES                           = 0x1F6E8, //
+    SMSG_INIT_WORLD_STATES                           = 0x04C15, // 4.3.4 15595
     SMSG_UPDATE_WORLD_STATE                          = 0x04816, // 4.3.4 15595
     CMSG_ITEM_NAME_QUERY                             = 0x100E3, //
     SMSG_ITEM_NAME_QUERY_RESPONSE                    = 0x17BC8, //

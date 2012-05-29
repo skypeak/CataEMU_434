@@ -3812,10 +3812,11 @@ void Spell::SendSpellStart()
         data.append(m_caster->GetPackGUID());
 
     data.append(m_caster->GetPackGUID());
-    data << uint8(_cast_count);                            // pending spell cast?
+    data << uint8(_cast_count);                             // pending spell cast?
     data << uint32(m_spellInfo->Id);                        // spellId
     data << uint32(castFlags);                              // cast flags
-    data << int32(_timer);                                 // delay?
+    data << int32(_timer);                                  // delay?
+    data << uint32(0);                                      // unknown 434
 
     m_targets.Write(data);
 

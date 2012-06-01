@@ -1409,9 +1409,10 @@ class Unit : public WorldObject
 
         Powers getPowerType() const { return Powers(GetByteValue(UNIT_FIELD_BYTES_0, 3)); }
         void setPowerType(Powers power);
-        int32 GetPower(Powers power) const { return GetUInt32Value(UNIT_FIELD_POWER1   +power); }
-        uint32 GetMaxPower(Powers power) const { return GetUInt32Value(UNIT_FIELD_MAXPOWER1+power); }
+        int32 GetPower(Powers power) const { return (GetPowerIndexByClass(power, getClass()) == -1 ? 0 : GetUInt32Value(UNIT_FIELD_POWER1 + GetPowerIndexByClass(power, getClass()))); }
+        uint32 GetMaxPower(Powers power) const { return (GetPowerIndexByClass(power, getClass()) == -1 ? 0 : GetUInt32Value(UNIT_FIELD_MAXPOWER1 + GetPowerIndexByClass(power, getClass()))); }
         void SetPower(Powers power, int32 val);
+        uint32 GetPowerIndexByClass(uint32 powerId, uint32 classId) const;
         void SetMaxPower(Powers power, int32 val);
         // returns the change in power
         int32 ModifyPower(Powers power, int32 val);

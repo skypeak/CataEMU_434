@@ -13619,16 +13619,23 @@ void Unit::SetMaxHealth(uint32 val)
 
 void Unit::SetPower(Powers power, int32 val)
 {
+    int32 powerIndex = GetPowerIndexByClass(power, getClass());
     int32 maxPower = GetMaxPower(power);
     if (maxPower < val)
         val = maxPower;
 
-    SetStatInt32Value(UNIT_FIELD_POWER1 + power, val);
+    if (powerIndex == -1)
+    {
+        sLog->outError("Cannot set Power %u, for Unit " UI64FMTD, power, GetGUID());
+        return;
+    }
+
+    SetStatInt32Value(UNIT_FIELD_POWER1 + powerIndex, val);
 
     WorldPacket data(SMSG_POWER_UPDATE);
     data.append(GetPackGUID());
     data << int32(1);  // count of updates. uint8 and uint32 for each.
-    data << uint8(power);
+    data << uint8(powerIndex);
     data << int32(val);
     SendMessageToSet(&data, GetTypeId() == TYPEID_PLAYER ? true : false);
 
@@ -13655,8 +13662,14 @@ void Unit::SetPower(Powers power, int32 val)
 
 void Unit::SetMaxPower(Powers power, int32 val)
 {
+    int32 powerIndex = GetPowerIndexByClass(power, getClass());
+    if (powerIndex == -1)
+    {
+        sLog->outError("Cannot set  Max Power %u, for Unit " UI64FMTD, power, GetGUID());
+        return;
+    }
     int32 cur_power = GetPower(power);
-    SetStatInt32Value(UNIT_FIELD_MAXPOWER1 + power, val);
+    SetStatInt32Value(UNIT_FIELD_MAXPOWER1 + powerIndex, val);
 
     // group update
     if (GetTypeId() == TYPEID_PLAYER)
@@ -18018,4 +18031,29 @@ void Unit::ResetHealingDoneInPastSecs(uint32 secs)
 
     for (uint32 i = 0; i < secs; i++)
         m_heal_done[i] = 0;
+};
+
+uint32 Unit::GetPowerIndexByClass(uint32 powerId, uint32 classId) const
+{
+    ChrClassesEntry const* m_class = sChrClassesStore.LookupEntry(classId);
+
+    ASSERT(m_class && "Class not found");
+
+    uint32 index = 0;
+
+    for (uint32 i = 0; i <= sChrPowerTypesStore.GetNumRows(); i++)
+    {
+        ChrPowerTypesEntry const* cEntry = sChrPowerTypesStore.LookupEntry(i);
+
+        if (!cEntry)
+           continue;
+
+        if (classId != cEntry->classId)
+         continue;
+
+        if (powerId == cEntry->power)
+            return index;
+        index++;
+    }
+    return -1;
 };

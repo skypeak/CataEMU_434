@@ -538,6 +538,7 @@ enum Opcodes
     SMSG_GMTICKET_CREATE                             = 0x1A8A0, //
     CMSG_GMTICKET_UPDATETEXT                         = 0x17F8C, //
     SMSG_GMTICKET_UPDATETEXT                         = 0x1A5E8, //
+    MSG_VERIFY_CONNECTIVITY                          = 0x04F57, //
     SMSG_ACCOUNT_DATA_TIMES                          = 0x04B05, // 4.3.4 15595
     CMSG_REQUEST_ACCOUNT_DATA                        = 0x06505, // 4.3.4 15595
     CMSG_UPDATE_ACCOUNT_DATA                         = 0x04736, // 4.3.4 15595
@@ -1346,7 +1347,7 @@ enum Opcodes
     SMSG_GUILD_CRITERIA_DATA                         = 0x1400E, //
     CMSG_RETURN_TO_GRAVEYARD                         = 0x10593, //
     CMSG_LOG_DISCONNECT                              = 0x10594, //
-    CMSG_LOAD_SCREEN                                 = 0x02422, // 4.3.4 15595
+    //CMSG_LOAD_SCREEN                                 = 0x02422, // 4.3.4 15595
     NUM_MSG_TYPES                                    = 0x102B8  // last unknown opcode + 1.
 };
 

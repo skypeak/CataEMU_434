@@ -1225,35 +1225,12 @@ struct ItemDamageEntry
   uint32    Id2;                                            // 8 item level
 };
 
-<<<<<<< HEAD
-=======
-#define MAX_ITEM_EXT_COST_ITEMS         5
-#define MAX_ITEM_EXT_COST_CURRENCIES    5
-#define MAX_EXTENDED_COST_ITEMS         5
-#define MAX_EXTENDED_COST_CURRENCIES    5
-
-struct ItemExtendedCostEntry
-{
-    uint32      ID;                                         // 0 extended-cost entry id
-    //uint32    reqhonorpoints;                             // 1 required honor points
-    //uint32    reqarenapoints;                             // 2 required arena points
-    uint32      RequiredArenaSlot;                          // 3 arena slot restrictions (min slot value)
-    uint32      RequiredItem[MAX_ITEM_EXT_COST_ITEMS];      // 4-8 required item id
-    uint32      RequiredItemCount[MAX_ITEM_EXT_COST_ITEMS]; // 9-13 required count of 1st item
-    uint32      RequiredPersonalArenaRating;                // 14 required personal arena rating
-    //uint32    ItemPurchaseGroup;                          // 15
-    uint32      RequiredCurrency[MAX_ITEM_EXT_COST_CURRENCIES];// 16-20 required curency id
-    uint32      RequiredCurrencyCount[MAX_ITEM_EXT_COST_CURRENCIES];// 21-25 required curency count
-    //uint32    something[5];                               // 26-30
-};
-
->>>>>>> 3f7d6515371836b09b8e8e2f123b356d40e5b43b
 struct ItemLimitCategoryEntry
 {
-    uint32      ID;                                                 // 0 Id
-    //char*     name;                                               // 1       m_name_lang
-    uint32      maxCount;                                           // 2       m_quantity max allowed equipped as item or in gem slot
-    uint32      mode;                                               // 3       m_flags 0 = have, 1 = equip (enum ItemLimitCategoryMode)
+    uint32      ID;                                         // 0 Id
+    //char*     name;                                       // 1       m_name_lang
+    uint32      maxCount;                                   // 2       m_quantity max allowed equipped as item or in gem slot
+    uint32      mode;                                       // 3       m_flags 0 = have, 1 = equip (enum ItemLimitCategoryMode)
 };
 
 #define MAX_ITEM_ENCHANTMENT_EFFECTS 3

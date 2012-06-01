@@ -268,21 +268,8 @@ int WorldSocket::open (void *a)
 
     m_Address = remote_addr.get_host_addr();
 
-    WorldPacket packet(MSG_VERIFY_CONNECTIVITY, 46); 
-    packet << "RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"; 
-
-    if (SendPacket(packet) == -1)
-        return -1;
-
-    // Send startup packet.
-    WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
-
-    for (uint32 i = 0; i < 8; i++)
-        packet << uint32(0);
-
-    packet << m_Seed;
-    packet << uint8(1);
-    return SendPacket(packet);
+    WorldPacket packet(MSG_VERIFY_CONNECTIVITY, 46);
+    packet << "RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT";
 
     if (SendPacket(packet) == -1)
         return -1;

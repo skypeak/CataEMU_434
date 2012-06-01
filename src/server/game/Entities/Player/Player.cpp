@@ -2633,7 +2633,15 @@ void Player::Regenerate(Powers power)
     if (_regenTimerCount >= 2000)
         SetPower(power, curValue);
     else
-        UpdateUInt32Value(UNIT_FIELD_POWER1 + power, curValue);
+    {
+        int32 powerIndex = GetPowerIndexByClass(power, getClass());
+        if (powerIndex == -1)
+        {
+            sLog->outError("Cannot set Power %u, for Unit " UI64FMTD, power, GetGUID());
+            return;
+        }
+        UpdateUInt32Value(UNIT_FIELD_POWER1 + powerIndex, curValue);
+    }
 }
 
 void Player::RegenerateHealth()

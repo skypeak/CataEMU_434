@@ -120,13 +120,11 @@ DBCStorage <ItemDamageEntry>              sItemDamageTwoHandCasterStore(ItemDama
 DBCStorage <ItemDamageEntry>              sItemDamageWandStore(ItemDamagefmt);
 DBCStorage <ItemDisenchantLootEntry>      sItemDisenchantLootStore(ItemDisenchantLootfmt);
 //DBCStorage <ItemDisplayInfoEntry>         sItemDisplayInfoStore(ItemDisplayTemplateEntryfmt); -- not used currently
-DBCStorage <ItemExtendedCostEntry>        sItemExtendedCostStore(ItemExtendedCostEntryfmt);
 DBCStorage <ItemLimitCategoryEntry>       sItemLimitCategoryStore(ItemLimitCategoryEntryfmt);
 DBCStorage <ItemRandomPropertiesEntry>    sItemRandomPropertiesStore(ItemRandomPropertiesfmt);
 DBCStorage <ItemRandomSuffixEntry>        sItemRandomSuffixStore(ItemRandomSuffixfmt);
 DBCStorage <ItemSetEntry>                 sItemSetStore(ItemSetEntryfmt);
 DBCStorage <ItemReforgeEntry>             sItemReforgeStore(ItemReforgefmt);
-DBCStorage <ItemCurrencyCostEntry>        sItemCurrencyCostStore(ItemCurrencyCostfmt);
 
 DBCStorage <LFGDungeonEntry> sLFGDungeonStore(LFGDungeonEntryfmt);
 
@@ -293,7 +291,7 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
 
     StoreProblemList bad_dbc_files;
 
-    for (uint8 i = 0 ; i < TOTAL_LOCALES; ++i)
+    for (uint8 i = 0; i < TOTAL_LOCALES; ++i)
         availableDbcLocales |= (1 << i);
 
     LoadDBC(availableDbcLocales, bad_dbc_files, sAreaStore, dbcPath, "AreaTable.dbc");
@@ -332,8 +330,6 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureFamilyStore,         dbcPath, "CreatureFamily.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureSpellDataStore,      dbcPath, "CreatureSpellData.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureTypeStore,           dbcPath, "CreatureType.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sCurrencyTypesStore,          dbcPath, "CurrencyTypes.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sItemCurrencyCostStore,       dbcPath, "ItemCurrencyCost.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDestructibleModelDataStore,  dbcPath, "DestructibleModelData.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDungeonEncounterStore,       dbcPath, "DungeonEncounter.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDurabilityCostsStore,        dbcPath, "DurabilityCosts.dbc");
@@ -384,7 +380,6 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     LoadDBC(availableDbcLocales, bad_dbc_files, sItemBagFamilyStore,           dbcPath, "ItemBagFamily.dbc");
  // LoadDBC(availableDbcLocales, bad_dbc_files, sItemDisplayInfoStore,         dbcPath, "ItemDisplayInfo.dbc");     -- not used currently
  // LoadDBC(availableDbcLocales, bad_dbc_files, sItemCondExtCostsStore,        dbcPath, "ItemCondExtCosts.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sItemExtendedCostStore,        dbcPath, "ItemExtendedCost.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sItemLimitCategoryStore,       dbcPath, "ItemLimitCategory.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sItemRandomPropertiesStore,    dbcPath, "ItemRandomProperties.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sItemRandomSuffixStore,        dbcPath, "ItemRandomSuffix.dbc");
@@ -423,7 +418,7 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
 
     // HACK for map 0, data removed in 4.0 - by LordJZ
     /// ToDo: Find a way to correctly fix this
-    sMapDifficultyMap[MAKE_PAIR32(0/*map*/, 0/*difficulty*/)] = MapDifficulty(0/*resetTime*/ , 0/*mapPlayers*/, false /*HasErrorMessage*/);
+    sMapDifficultyMap[MAKE_PAIR32(0/*map*/, 0/*difficulty*/)] = MapDifficulty(0/*resetTime*/, 0/*mapPlayers*/, false /*HasErrorMessage*/);
 
     sMapDifficultyStore.Clear();
 
@@ -520,9 +515,7 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     }
 
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellCastTimesStore,          dbcPath, "SpellCastTimes.dbc");
-
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellDifficultyStore,         dbcPath, "SpellDifficulty.dbc", &CustomSpellDifficultyfmt, &CustomSpellDifficultyIndex);
-
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellDurationStore,           dbcPath, "SpellDuration.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellFocusObjectStore,        dbcPath, "SpellFocusObject.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellItemEnchantmentStore,    dbcPath, "SpellItemEnchantment.dbc");
@@ -532,7 +525,6 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRuneCostStore,           dbcPath, "SpellRuneCost.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellShapeshiftFormStore,     dbcPath, "SpellShapeshiftForm.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSummonPropertiesStore,        dbcPath, "SummonProperties.dbc");
-
     LoadDBC(availableDbcLocales, bad_dbc_files, sTalentStore,                  dbcPath, "Talent.dbc");
 
     // Create Spelldifficulty searcher
@@ -661,7 +653,6 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     if (!sAreaStore.LookupEntry(4445)              ||       // last area (areaflag) added in 4.0.6a
         !sCharTitlesStore.LookupEntry(229)         ||       // last char title added in 4.0.6a
         !sGemPropertiesStore.LookupEntry(1858)     ||       // last gem property added in 4.0.6a
-        !sItemExtendedCostStore.LookupEntry(3400)  ||       // last item extended cost added in 4.0.6a
         !sMapStore.LookupEntry(767)                ||       // last map added in 4.0.6a
         !sSpellStore.LookupEntry(96539)            )        // last added spell in 4.0.6a
     {

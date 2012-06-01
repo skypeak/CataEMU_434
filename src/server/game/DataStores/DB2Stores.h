@@ -26,9 +26,13 @@
 
 #include <list>
 
-extern DB2Storage <ItemEntry> sItemStore;
-extern DB2Storage <ItemSparseEntry> sItemSparseStore;
+extern DB2Storage <ItemEntry>                    sItemStore;
+extern DB2Storage <ItemSparseEntry>              sItemSparseStore;
+extern DB2Storage <ItemCurrencyCostEntry>        sItemCurrencyCostStore;
+extern DB2Storage <ItemExtendedCostEntry>        sItemExtendedCostStore;
 
 void LoadDB2Stores(const std::string& dataPath);
+
+//DB2Storage <ItemEntry> const* GetItemDisplayStore();
 
 #endif

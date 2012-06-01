@@ -22,6 +22,7 @@
 
 const char Itemfmt[]="niiiiiii";
 const char ItemSparsefmt[]="niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiifiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiisssssiiiiiiiiiiiiiiiiiiiiiiifiiifii";
-const char KeyChainfmt[]="";
+const char ItemCurrencyCostfmt[]="di";
+const char ItemExtendedCostEntryfmt[]="niiiiiiiiiiiiiixiiiiiiiiiixxxxx";
 
 #endif

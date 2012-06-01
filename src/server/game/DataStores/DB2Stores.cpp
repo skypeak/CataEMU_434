@@ -27,8 +27,10 @@
 
 #include <map>
 
-DB2Storage <ItemEntry> sItemStore(Itemfmt);
-DB2Storage <ItemSparseEntry> sItemSparseStore (ItemSparsefmt);
+DB2Storage <ItemEntry>                    sItemStore(Itemfmt);
+DB2Storage <ItemSparseEntry>              sItemSparseStore (ItemSparsefmt);
+DB2Storage <ItemCurrencyCostEntry>        sItemCurrencyCostStore(ItemCurrencyCostfmt);
+DB2Storage <ItemExtendedCostEntry>        sItemExtendedCostStore(ItemExtendedCostEntryfmt);
 
 typedef std::list<std::string> StoreProblemList1;
 
@@ -36,7 +38,7 @@ uint32 DB2FilesCount = 0;
 
 static bool LoadDB2_assert_print(uint32 fsize, uint32 rsize, const std::string& filename)
 {
-    sLog->outError("Size of '%s' setted by format string (%u) not equal size of C++ structure (%u).", filename.c_str(), fsize, rsize);
+    sLog->outError("Size of '%s' is set by format string (%u) not equal size of C++ structure (%u).", filename.c_str(), fsize, rsize);
 
     // ASSERT must fail after function call
     return false;
@@ -83,6 +85,8 @@ void LoadDB2Stores(const std::string& dataPath)
 
     LoadDB2(bad_db2_files, sItemStore,                   db2Path, "Item.db2");
     LoadDB2(bad_db2_files, sItemSparseStore,             db2Path, "Item-sparse.db2");
+    LoadDB2(bad_db2_files, sItemCurrencyCostStore,       db2Path, "ItemCurrencyCost.db2");
+    LoadDB2(bad_db2_files, sItemExtendedCostStore,       db2Path, "ItemExtendedCost.db2");
 
     // error checks
     if (bad_db2_files.size() >= DB2FilesCount)
@@ -119,11 +123,12 @@ void LoadDB2Stores(const std::string& dataPath)
     }
 
     // Check loaded DB2 files proper version
-    if (!sItemStore.LookupEntry(68815) ||                   // last client known item added in 4.0.6a
-        !sItemSparseStore.LookupEntry(68815))               // last client known item added in 4.0.6a
+    if (!sItemStore.LookupEntry(79062) ||               // last client known item added in 4.3.0
+        !sItemSparseStore.LookupEntry(78930) ||         // last client known item added in 4.3.0
+        !sItemExtendedCostStore.LookupEntry(3400))      // last client known item added in 4.0.6a
     {
         sLog->outString();
-        sLog->outError("Please extract correct db2 files from client 4.0.6a 13623.");
+        sLog->outError("Please extract correct db2 files from client 4.3.0 15050.");
         exit(1);
     }
 

@@ -45,8 +45,12 @@ const char CreatureDisplayInfofmt[]="nxxxfxxxxxxxxxxxx";
 const char CreatureFamilyfmt[]="nfifiiiiixsx";
 const char CreatureSpellDatafmt[]="niiiixxxx";
 const char CreatureTypefmt[]="nxx";
+<<<<<<< HEAD
 const char CurrencyTypesfmt[]="nxxxxxxiixx";
+=======
+const char CurrencyTypesfmt[]="nxxxxxxiiix";
 const char ItemCurrencyCostfmt[]="xn";
+>>>>>>> 3f7d6515371836b09b8e8e2f123b356d40e5b43b
 const char DestructibleModelDatafmt[]="ixxixxxixxxixxxixxxxxxxx";
 const char DungeonEncounterfmt[]="niixisxx";
 const char DurabilityCostsfmt[]="niiiiiiiiiiiiiiiiiiiiiiiiiiiii";
@@ -72,7 +76,7 @@ const char GtRegenHPPerSptfmt[]="xf";
 const char gtOCTHpPerStaminafmt[]="xf";
 const char GtRegenMPPerSptfmt[]="xf";
 const char GtSpellScalingfmt[]="nf";
-const char Holidaysfmt[]="nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";       // this needs checked for 406a
+const char Holidaysfmt[]="niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiixxsiix";       // this needs checked for 406a
 const char ItemArmorQualityfmt[]="nfffffffi";
 const char ItemArmorShieldfmt[]="nifffffff";
 const char ItemArmorTotalfmt[]="niffff";
@@ -81,7 +85,6 @@ const char ItemBagFamilyfmt[]="nx";
 //const char ItemCondExtCostsEntryfmt[]="xiii";
 const char ItemDamagefmt[]="nfffffffi";
 const char ItemDisenchantLootfmt[]="niiiiii";
-const char ItemExtendedCostEntryfmt[]="nxxiiiiiiiiiiiixiiiiiiiiiixxxxx";
 const char ItemLimitCategoryEntryfmt[]="nxii";
 const char ItemRandomPropertiesfmt[]="nxiiixxs";
 const char ItemRandomSuffixfmt[]="nsxiiiiiiiiii";;

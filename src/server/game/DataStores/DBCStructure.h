@@ -126,13 +126,13 @@ struct AchievementCriteriaEntry
             uint32  zoneID;                                 // 3
             uint32  questCount;                             // 4
         } complete_quests_in_zone;
-        //todo
+
         // ACHIEVEMENT_CRITERIA_TYPE_CURRENCY = 12
-        /*struct
+        struct
         {
-            uint32 currency;                                // 3
-            uint32 count;                                   // 4
-        } currencyGain;*/
+            uint32 currency;
+            uint32 count;
+        } currencyGain;
 
         // ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_DAILY_QUEST   = 14
         struct
@@ -830,12 +830,6 @@ struct CurrencyCategoryEntry
 };
 */
 
-struct ItemCurrencyCostEntry
-{
-    //uint32  Id;
-    uint32  ItemId;
-};
-
 struct CurrencyTypesEntry
 {
     uint32    ID;                                           // 0        not used
@@ -847,7 +841,7 @@ struct CurrencyTypesEntry
     //uint32 unk6;                                          // 6        archaeology-related (?)
     uint32 TotalCap;                                        // 7
     uint32 WeekCap;                                         // 8
-    //int32 unk9;                                           // 9
+    uint32 Flags;                                           // 9
     //char* description;                                    // 10
 };
 
@@ -1138,16 +1132,16 @@ struct HolidayNamesEntry
 struct HolidaysEntry
 {
     uint32 Id;                                              // 0        m_ID
-    //uint32 Duration[MAX_HOLIDAY_DURATIONS];                 // 1-10     m_duration
-    //uint32 Date[MAX_HOLIDAY_DATES];                         // 11-36    m_date (dates in unix time starting at January, 1, 2000)
-    //uint32 Region;                                          // 37       m_region (wow region)
-    //uint32 Looping;                                         // 38       m_looping
-    //uint32 CalendarFlags[MAX_HOLIDAY_FLAGS];                // 39-48    m_calendarFlags
+    uint32 Duration[MAX_HOLIDAY_DURATIONS];                 // 1-10     m_duration
+    uint32 Date[MAX_HOLIDAY_DATES];                         // 11-36    m_date (dates in unix time starting at January, 1, 2000)
+    uint32 Region;                                          // 37       m_region (wow region)
+    uint32 Looping;                                         // 38       m_looping
+    uint32 CalendarFlags[MAX_HOLIDAY_FLAGS];                // 39-48    m_calendarFlags
     //uint32 holidayNameId;                                 // 49       m_holidayNameID (HolidayNames.dbc)
     //uint32 holidayDescriptionId;                          // 50       m_holidayDescriptionID (HolidayDescriptions.dbc)
-    //char* TextureFilename;                                  // 51       m_textureFilename
-    //uint32 Priority;                                        // 52       m_priority
-    //uint32 CalendarFilterType;                              // 53       m_calendarFilterType (-1 = Fishing Contest, 0 = Unk, 1 = Darkmoon Festival, 2 = Yearly holiday)
+    char* TextureFilename;                                  // 51       m_textureFilename
+    uint32 Priority;                                        // 52       m_priority
+    uint32 CalendarFilterType;                              // 53       m_calendarFilterType (-1 = Fishing Contest, 0 = Unk, 1 = Darkmoon Festival, 2 = Yearly holiday)
     //uint32 flags;                                         // 54       m_flags (0 = Darkmoon Faire, Fishing Contest and Wotlk Launch, rest is 1)
 };
 
@@ -1231,8 +1225,12 @@ struct ItemDamageEntry
   uint32    Id2;                                            // 8 item level
 };
 
+<<<<<<< HEAD
+=======
 #define MAX_ITEM_EXT_COST_ITEMS         5
 #define MAX_ITEM_EXT_COST_CURRENCIES    5
+#define MAX_EXTENDED_COST_ITEMS         5
+#define MAX_EXTENDED_COST_CURRENCIES    5
 
 struct ItemExtendedCostEntry
 {
@@ -1249,6 +1247,7 @@ struct ItemExtendedCostEntry
     //uint32    something[5];                               // 26-30
 };
 
+>>>>>>> 3f7d6515371836b09b8e8e2f123b356d40e5b43b
 struct ItemLimitCategoryEntry
 {
     uint32      ID;                                                 // 0 Id
@@ -1535,12 +1534,12 @@ struct ScalingStatValuesEntry
     {
         if (mask & 0x4001F)
         {
-            if(mask & 0x00000001) return ssdMultiplier[1];
-            if(mask & 0x00000002) return ssdMultiplier[2]; // 0 and 1 were duplicated
-            if(mask & 0x00000004) return ssdMultiplier[3];
-            if(mask & 0x00000008) return ssdMultiplier[0];
-            if(mask & 0x00000010) return ssdMultiplier[4];
-            if(mask & 0x00040000) return ssdMultiplier[2]; // 4.0.0
+            if (mask & 0x00000001) return ssdMultiplier[1];
+            if (mask & 0x00000002) return ssdMultiplier[2]; // 0 and 1 were duplicated
+            if (mask & 0x00000004) return ssdMultiplier[3];
+            if (mask & 0x00000008) return ssdMultiplier[0];
+            if (mask & 0x00000010) return ssdMultiplier[4];
+            if (mask & 0x00040000) return ssdMultiplier[2]; // 4.0.0
         }
         return 0;
     }
@@ -1577,11 +1576,6 @@ struct ScalingStatValuesEntry
     uint32 getSpellBonus(uint32 mask) const
     {
         if (mask & 0x00008000) return spellBonus;
-        return 0;
-    }
-    uint32 getFeralBonus(uint32 mask) const
-    {
-        if (mask & 0x00010000) return 0;   // not used?
         return 0;
     }
 };

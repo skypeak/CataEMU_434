@@ -123,7 +123,31 @@ struct ItemSparseEntry
     int32      Field131;                                     // 130
 };
 
-// GCC has alternative #pragma pack(N) syntax and old gcc version does not support pack(push, N), also any gcc version does not support it at some platform
+struct ItemCurrencyCostEntry
+{
+    //uint32 id;                                            // 0
+    uint32 itemid;                                          // 1
+};
+
+#define MAX_ITEM_EXT_COST_ITEMS         5
+#define MAX_ITEM_EXT_COST_CURRENCIES    5
+
+struct ItemExtendedCostEntry
+{
+    uint32      ID;                                                 // 0 extended-cost entry id
+    uint32      RequiredHonorPoints;                                // 1 required honor points
+    uint32      RequiredArenaPoints;                                // 2 required arena points
+    uint32      RequiredArenaSlot;                                  // 3 arena slot restrictions (min slot value)
+    uint32      RequiredItem[MAX_ITEM_EXT_COST_ITEMS];              // 4-8 required item id
+    uint32      RequiredItemCount[MAX_ITEM_EXT_COST_ITEMS];         // 9-13 required count of 1st item
+    uint32      RequiredPersonalArenaRating;                        // 14 required personal arena rating
+    //uint32    ItemPurchaseGroup;                                  // 15
+    uint32      RequiredCurrency[MAX_ITEM_EXT_COST_CURRENCIES];     // 16-20 required currency id
+    uint32      RequiredCurrencyCount[MAX_ITEM_EXT_COST_CURRENCIES];// 21-25 required currency count
+    //uint32    something[5];                                       // 26-30
+};
+
+// GCC has alternative #pragma pack(N) syntax and old gcc version does not support pack(push, N), also any GCC version does not support it at some platform
 #if defined(__GNUC__)
 #pragma pack()
 #else

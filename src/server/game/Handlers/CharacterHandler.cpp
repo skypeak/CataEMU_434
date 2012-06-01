@@ -221,33 +221,39 @@ struct charEnumInfo
 
 void WorldSession::HandleCharEnum(PreparedQueryResult result)
 {
-    WorldPacket data(SMSG_CHAR_ENUM, 270);                  // we guess size
+    WorldPacket data(SMSG_CHAR_ENUM, 270);  // SMSG_RESPONSE_CHARACTER_ENUM??
 
+    uint8 charCount = 0;
+    ByteBuffer buffer;
+
+    data.WriteBits(0, 23);
+    data.WriteBit(1);
     data.WriteBits(result ? (*result).GetRowCount() : 0 , 17);
 
     std::vector<charEnumInfo> charInfoList;
     charInfoList.resize(result ? (*result).GetRowCount() : 0);
 
-    _allowedCharsToLogin.clear();
     if (result)
     {
-        typedef std::pair<uint32, uint64> Guids;
+        typedef std::pair<uint64, uint64> Guids;
         std::vector<Guids> guidsVect;
-        ByteBuffer buffer;
         _allowedCharsToLogin.clear();
-        int charCount = 0;
+
         do
         {
-            uint32 GuidLow = (*result)[0].GetUInt32();
-            uint64 GuildGuid = (*result)[13].GetUInt32();//TODO: store as uin64
+            uint64 GuidLow = (*result)[0].GetUInt64();
+            uint32 atLoginFlags = (*result)[15].GetUInt32();
+            uint64 GuildGuid = (*result)[13].GetUInt64();
 
             charEnumInfo charInfo = charEnumInfo();
-            charInfo.nameLenghts =  (*result)[1].GetString().size();
-            charInfo.firstLogin = (*result)[15].GetUInt32() & AT_LOGIN_FIRST ? true : false;
+            std::string name = (*result)[1].GetString();
+            uint32 nameLen = name.length();
+            charInfo.nameLenghts =  nameLen;
+            charInfo.firstLogin = atLoginFlags & AT_LOGIN_FIRST ? true : false;
             charInfoList[charCount] = charInfo;
             charCount++;
 
-            guidsVect.push_back(std::make_pair(GuidLow, GuildGuid));
+            guidsVect.push_back(std::make_pair(GuidLow, atLoginFlags));
 
             sLog->outDetail("Loading char guid %u from account %u.", GuidLow, GetAccountId());
 
@@ -256,7 +262,6 @@ void WorldSession::HandleCharEnum(PreparedQueryResult result)
                 sLog->outError("Building enum data for SMSG_CHAR_ENUM has failed, aborting");
                 return;
             }
-
             _allowedCharsToLogin.insert(GuidLow);
         }
         while (result->NextRow());
@@ -264,58 +269,50 @@ void WorldSession::HandleCharEnum(PreparedQueryResult result)
         int counter = 0;
         for (std::vector<Guids>::iterator itr = guidsVect.begin(); itr != guidsVect.end(); ++itr)
         {
-            uint32 GuidLow = (*itr).first;
+            uint32 Guid = (*itr).first;
             uint64 GuildGuid = (*itr).second;
 
-            uint8 Guid0 = uint8(GuidLow);
-            uint8 Guid1 = uint8(GuidLow >> 8);
-            uint8 Guid2 = uint8(GuidLow >> 16);
-            uint8 Guid3 = uint8(GuidLow >> 24);
+            uint8 Guid0 = uint8(Guid);
+            uint8 Guid1 = uint8(Guid >> 8);
+            uint8 Guid2 = uint8(Guid >> 16);
+            uint8 Guid3 = uint8(Guid >> 24);
 
-            // We dont send guild guid, high guid == 0 for players
-            for (uint8 i = 0; i < 18; ++i)
+            for (int i = 0; i < 18; ++i)
             {
-                switch(i)
+                switch (i)
                 {
-                    // guidlow[0]
-                case 10:
-                    data.WriteBit(Guid0 ? 1 : 0);
-                    break;
-                    // guidlow[1]
-                case 12:
-                    data.WriteBit(Guid1 ? 1 : 0);
-                    break;
-                    // guidlow[2]
-                case 1:
-                    data.WriteBit(Guid2 ? 1 : 0);
-                    break;
-                    // guidlow[3]
-                case 11:
-                    data.WriteBit(Guid3 ? 1 : 0);
-                    break;
-                case 8:
-                    data.WriteBits(charInfoList[counter].nameLenghts, 7);
-                    break;
-                case 13:
-                    data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
-                    break;
-                default:
-                    data.WriteBit(0);
-                    break;
+                    case 14:
+                        data.WriteBit(Guid0 ? 1 : 0);
+                        break;
+                    case 10:
+                        data.WriteBit(Guid1 ? 1 : 0);
+                        break;
+                    case 15:
+                        data.WriteBit(Guid2 ? 1 : 0);
+                        break;
+                    case 0:
+                        data.WriteBit(Guid3 ? 1 : 0);
+                        break;
+                    case 4:
+                        data.WriteBits(charInfoList[counter].nameLenghts, 7);
+                        break;
+                    case 13:
+                        data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
+                        break;
+                    default:
+                        data.WriteBit(0);
+                        break;
                 }
             }
 
             counter++;
         }
-        data.WriteBits(0x0, 23); // unk counter 4.3
-        data.WriteBit(1);
 
         data.FlushBits();
         data.append(buffer);
     }
     else
     {
-        data.WriteBits(0x0, 23);
         data.WriteBit(1);
         data.FlushBits();
     }
@@ -491,7 +488,7 @@ void WorldSession::HandleCharCreateCallback(PreparedQueryResult result, Characte
 {
     /** This is a series of callbacks executed consecutively as a result from the database becomes available.
         This is much more efficient than synchronous requests on packet handler, and much less DoS prone.
-        It also prevents data syncrhonisation errors.
+        It also prevents data synchronization errors.
     */
     switch (_charCreateCallback.GetStage())
     {
@@ -987,10 +984,25 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     LoadAccountData(holder->GetPreparedResult(PLAYER_LOGIN_QUERY_LOADACCOUNTDATA), PER_CHARACTER_CACHE_MASK);
     SendAccountDataTimes(PER_CHARACTER_CACHE_MASK);
 
-    data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 7);         // added in 2.2.0
-    data << uint8(2);                                       // unknown value
-    data << uint8(0);                                       // enable(1) / disable(0) voice chat interface in client
-    data << uint32(0);                                      // Complain System Status
+    data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 34);         // added in 2.2.0
+    data << uint8(2);     // SystemStatus
+    data << uint32(1);    // Unknown, Mostly 1
+    data << uint32(1);    // Unknown, Mostly 1
+    data << uint32(2);    // Unknown, Mostly same as SystemStatus, but seen other values
+    data << uint32(0);    // Unknown, Hmm???
+
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(false); // Unknown
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(false); // EnableVoiceChat, not sure
+    data.WriteBit(false); // Unknown
+
+    data << uint32(1);    // Only seen 1
+    data << uint32(0);    // Unknown, like random values
+    data << uint32(0xA);  // Only seen 10
+    data << uint32(0x3C); // Only seen 60
+
     SendPacket(&data);
 
     // Send MOTD

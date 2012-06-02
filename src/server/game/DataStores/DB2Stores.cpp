@@ -123,14 +123,14 @@ void LoadDB2Stores(const std::string& dataPath)
     }
 
     // Check loaded DB2 files proper version
-    if (!sItemStore.LookupEntry(79062) ||               // last client known item added in 4.3.0
+    /*if (!sItemStore.LookupEntry(79062) ||               // last client known item added in 4.3.0
         !sItemSparseStore.LookupEntry(78930) ||         // last client known item added in 4.3.0
-        !sItemExtendedCostStore.LookupEntry(3400))      // last client known item added in 4.0.6a
+        !sItemExtendedCostStore.LookupEntry(3652))      // last item extended cost added in 4.2.0
     {
         sLog->outString();
         sLog->outError("Please extract correct db2 files from client 4.3.0 15050.");
         exit(1);
-    }
+    }*/
 
     sLog->outString(">> Initialized %d DB2 data stores.", DB2FilesCount);
     sLog->outString();

@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2011-2012 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2012 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,12 +19,12 @@
 #include "WorldPacket.h"
 #include "World.h"
 #include "Opcodes.h"
-
 #include <zlib.h>
 
-void WorldPacket::compress(uint32 opcode)
+
+void WorldPacket::Compress(uint32 opcode)
 {
-    if (opcode == OPCODE_NOT_FOUND)  // this just doesn't look right, atm not using that define opcode way.
+    if (opcode == OPCODE_NOT_FOUND)
         return;
 
     uint32 uncompressedOpcode = GetOpcode();
@@ -34,7 +33,7 @@ void WorldPacket::compress(uint32 opcode)
 
     std::vector<uint8> storage(destsize);
 
-    _compress(static_cast<void*>(&storage[0]), &destsize, static_cast<const void*>(contents()), size);
+    Compress(static_cast<void*>(&storage[0]), &destsize, static_cast<const void*>(contents()), size);
     if (destsize == 0)
         return;
 
@@ -48,7 +47,7 @@ void WorldPacket::compress(uint32 opcode)
         uncompressedOpcode, size, opcode, destsize);
 }
 
-void WorldPacket::_compress(void* dst, uint32 *dst_size, const void* src, int src_size)
+void WorldPacket::Compress(void* dst, uint32 *dst_size, const void* src, int src_size)
 {
     z_stream c_stream;
 

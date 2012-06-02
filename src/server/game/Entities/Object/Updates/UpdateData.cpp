@@ -65,7 +65,7 @@ bool UpdateData::BuildPacket(WorldPacket* packet)
     packet->append(m_data);
 
     if (packet->wpos() > 100)
-        packet->compress(SMSG_COMPRESSED_UPDATE_OBJECT);
+        packet->Compress(SMSG_COMPRESSED_UPDATE_OBJECT);
 
     return true;
 }
@@ -76,4 +76,25 @@ void UpdateData::Clear()
     m_outOfRangeGUIDs.clear();
     m_blockCount = 0;
     m_map = 0;
+}
+
+void WorldSession::HandleObjectUpdateFail(WorldPacket& recvPacket)
+{
+    uint64 GUID;
+    BitStream stream = recvPacket.ReadBitStream(8);
+
+    ByteBuffer bytes(8, true);
+
+    if (stream[6]) bytes[2] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[7]) bytes[1] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[1]) bytes[0] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[4]) bytes[5] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[5]) bytes[4] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[2]) bytes[6] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[3]) bytes[3] = recvPacket.ReadUInt8() ^ 1;
+    if (stream[0]) bytes[7] = recvPacket.ReadUInt8() ^ 1;
+
+    GUID = BitConverter::ToUInt64(bytes);
+
+    sLog->outError("Fatal Error: failed to update object with GUID "UI64FMTD" (type: %u)", GUID, GetLogNameForGuid(GUID));
 }

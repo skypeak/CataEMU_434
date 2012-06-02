@@ -332,7 +332,7 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureFamilyStore,         dbcPath, "CreatureFamily.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureSpellDataStore,      dbcPath, "CreatureSpellData.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sCreatureTypeStore,           dbcPath, "CreatureType.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sCurrencyTypesStore,          dbcPath, "CurrencyTypes.dbc");    
+    LoadDBC(availableDbcLocales, bad_dbc_files, sCurrencyTypesStore,          dbcPath, "CurrencyTypes.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDestructibleModelDataStore,  dbcPath, "DestructibleModelData.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDungeonEncounterStore,       dbcPath, "DungeonEncounter.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sDurabilityCostsStore,        dbcPath, "DurabilityCosts.dbc");
@@ -652,16 +652,16 @@ void LoadDBCStores(const std::string& dataPath, uint32& availableDbcLocales)
         exit(1);
     }
 
-    // Check loaded DBC files proper version
-    if (!sAreaStore.LookupEntry(4445)              ||       // last area (areaflag) added in 4.0.6a
-        !sCharTitlesStore.LookupEntry(229)         ||       // last char title added in 4.0.6a
-        !sGemPropertiesStore.LookupEntry(1858)     ||       // last gem property added in 4.0.6a
-        !sMapStore.LookupEntry(767)                ||       // last map added in 4.0.6a
-        !sSpellStore.LookupEntry(96539)            )        // last added spell in 4.0.6a
+    // Check loaded DBC files proper version for 4.3.0 15050
+    /*if (!sAreaStore.LookupEntry(4713) ||                    // last area (areaflag) added in 4.3.0
+        !sCharTitlesStore.LookupEntry(287) ||               // last char title added in 4.3.0
+        !sGemPropertiesStore.LookupEntry(2250) ||           // last gem property added in 4.3.0
+        !sMapStore.LookupEntry(980) ||                      // last map added in 4.3.0
+        !sSpellStore.LookupEntry(110966))                   // last added spell in 4.3.0
     {
         sLog->outError("You have _outdated_ DBC files. Please extract correct versions from current using client.");
         exit(1);
-    }
+    }*/
 
     sLog->outString(">> Initialized %d DBC data stores in %u ms", DBCFileCount, GetMSTimeDiffToNow(oldMSTime));
     sLog->outString();

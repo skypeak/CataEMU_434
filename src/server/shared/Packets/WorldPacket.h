@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2011-2012 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2012 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,18 +20,22 @@
 #define SKYFIRE_WORLDPACKET_H
 
 #include "Common.h"
+#include "Opcodes.h"
 #include "ByteBuffer.h"
 
 class WorldPacket : public ByteBuffer
 {
     public:
                                                             // just container for later use
-        WorldPacket()                                       : ByteBuffer(0), m_opcode(0)
+        WorldPacket() : ByteBuffer(0), m_opcode(0)
         {
         }
-        explicit WorldPacket(uint32 opcode, size_t res = 200) : ByteBuffer(res), m_opcode(opcode) { }
+
+        WorldPacket(uint32 opcode, size_t res = 200) : ByteBuffer(res), m_opcode(0)
+        {
+        }
                                                             // copy constructor
-        WorldPacket(const WorldPacket &packet)              : ByteBuffer(packet), m_opcode(packet.m_opcode)
+        WorldPacket(WorldPacket const& packet) : ByteBuffer(packet), m_opcode(packet.m_opcode)
         {
         }
 
@@ -45,10 +48,11 @@ class WorldPacket : public ByteBuffer
 
         uint32 GetOpcode() const { return m_opcode; }
         void SetOpcode(uint32 opcode) { m_opcode = opcode; }
+        void Compress(uint32 opcode);
 
-        void compress(uint32 opcode);
     protected:
         uint32 m_opcode;
-        void _compress(void* dst, uint32 *dst_size, const void* src, int src_size);
+        void Compress(void* dst, uint32 *dst_size, const void* src, int src_size);
 };
 #endif
+

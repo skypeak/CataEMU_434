@@ -46,9 +46,10 @@ class GameObject;
 class Quest;
 class WorldPacket;
 class WorldSocket;
-class LoginQueryHolder;
 class CharacterHandler;
+class LoginQueryHolder;
 class SpellCastTargets;
+//class Warden;
 struct AreaTableEntry;
 struct LfgJoinResultData;
 struct LfgLockStatus;
@@ -201,7 +202,7 @@ class CharacterCreateInfo
         uint8 HairColor;
         uint8 FacialHair;
         uint8 OutfitId;
-        WorldPacket Data;
+        WorldPacket& Data;
 
         /// Server side data
         uint8 CharCount;
@@ -916,6 +917,7 @@ class WorldSession
         void HandleEquipmentSetUse(WorldPacket& recv_data);
         void HandleWorldStateUITimerUpdate(WorldPacket& recv_data);
         void HandleReadyForAccountDataTimes(WorldPacket& recv_data);
+        void HandleObjectUpdateFail(WorldPacket& recv_data);
         void HandleQueryQuestsCompleted(WorldPacket& recv_data);
         void HandleQuestPOIQuery(WorldPacket& recv_data);
         void HandleEjectPassenger(WorldPacket& data);

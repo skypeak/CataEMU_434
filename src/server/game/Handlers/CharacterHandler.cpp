@@ -213,31 +213,109 @@ bool LoginQueryHolder::Initialize()
     return res;
 }
 
+struct charEnumInfo
+{
+    uint8 nameLenghts;
+    bool firstLogin;
+};
+
 void WorldSession::HandleCharEnum(PreparedQueryResult result)
 {
-    WorldPacket data(SMSG_CHAR_ENUM, 100);                  // we guess size
+    WorldPacket data(SMSG_CHAR_ENUM, 270);  // SMSG_RESPONSE_CHARACTER_ENUM??
 
-    uint8 num = 0;
+    uint8 charCount = 0;
+    ByteBuffer buffer;
 
-    data << num;
+    data.WriteBits(0, 23);
+    data.WriteBit(1);
+    data.WriteBits(result ? (*result).GetRowCount() : 0 , 17);
 
-    _allowedCharsToLogin.clear();
+    std::vector<charEnumInfo> charInfoList;
+    charInfoList.resize(result ? (*result).GetRowCount() : 0);
+
     if (result)
     {
+        typedef std::pair<uint64, uint64> Guids;
+        std::vector<Guids> guidsVect;
+        _allowedCharsToLogin.clear();
+
         do
         {
-            uint32 guidlow = (*result)[0].GetUInt32();
-            sLog->outDetail("Loading char guid %u from account %u.", guidlow, GetAccountId());
-            if (Player::BuildEnumData(result, &data))
+            uint64 GuidLow = (*result)[0].GetUInt64();
+            uint32 atLoginFlags = (*result)[15].GetUInt32();
+            uint64 GuildGuid = (*result)[13].GetUInt64();
+
+            charEnumInfo charInfo = charEnumInfo();
+            std::string name = (*result)[1].GetString();
+            uint32 nameLen = name.length();
+            charInfo.nameLenghts =  nameLen;
+            charInfo.firstLogin = atLoginFlags & AT_LOGIN_FIRST ? true : false;
+            charInfoList[charCount] = charInfo;
+            charCount++;
+
+            guidsVect.push_back(std::make_pair(GuidLow, atLoginFlags));
+
+            sLog->outDetail("Loading char guid %u from account %u.", GuidLow, GetAccountId());
+
+            if (!Player::BuildEnumData(result, &buffer))
             {
-                _allowedCharsToLogin.insert(guidlow);
-                ++num;
+                sLog->outError("Building enum data for SMSG_CHAR_ENUM has failed, aborting");
+                return;
             }
+            _allowedCharsToLogin.insert(GuidLow);
         }
         while (result->NextRow());
-    }
 
-    data.put<uint8>(0, num);
+        int counter = 0;
+        for (std::vector<Guids>::iterator itr = guidsVect.begin(); itr != guidsVect.end(); ++itr)
+        {
+            uint32 Guid = (*itr).first;
+            uint64 GuildGuid = (*itr).second;
+
+            uint8 Guid0 = uint8(Guid);
+            uint8 Guid1 = uint8(Guid >> 8);
+            uint8 Guid2 = uint8(Guid >> 16);
+            uint8 Guid3 = uint8(Guid >> 24);
+
+            for (int i = 0; i < 18; ++i)
+            {
+                switch (i)
+                {
+                    case 14:
+                        data.WriteBit(Guid0 ? 1 : 0);
+                        break;
+                    case 10:
+                        data.WriteBit(Guid1 ? 1 : 0);
+                        break;
+                    case 15:
+                        data.WriteBit(Guid2 ? 1 : 0);
+                        break;
+                    case 0:
+                        data.WriteBit(Guid3 ? 1 : 0);
+                        break;
+                    case 4:
+                        data.WriteBits(charInfoList[counter].nameLenghts, 7);
+                        break;
+                    case 13:
+                        data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
+                        break;
+                    default:
+                        data.WriteBit(0);
+                        break;
+                }
+            }
+
+            counter++;
+        }
+
+        data.FlushBits();
+        data.append(buffer);
+    }
+    else
+    {
+        data.WriteBit(1);
+        data.FlushBits();
+    }
 
     SendPacket(&data);
 }
@@ -251,18 +329,12 @@ void WorldSession::HandleCharEnumOpcode(WorldPacket & /*recv_data*/)
     /// get all the data necessary for loading all characters (along with their pets) on the account
 
     if (sWorld->getBoolConfig(CONFIG_DECLINED_NAMES_USED))
-    {
-        stmt = CharacterDatabase.GetPreparedStatement(CHAR_GET_ENUM_DECLINED_NAME);
-        stmt->setUInt32(0, PET_SLOT_DEFAULT);
-        stmt->setUInt32(1, GetAccountId());
-    }
+        stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ENUM_DECLINED_NAME);
     else
-    {
-        stmt = CharacterDatabase.GetPreparedStatement(CHAR_GET_ENUM);
-        stmt->setUInt32(0, GetAccountId());
-    }
+        stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ENUM);
 
-    stmt->setUInt32(0, GetAccountId());
+    stmt->setUInt8(0, PET_SLOT_DEFAULT);
+    stmt->setUInt32(1, GetAccountId());
 
     _charEnumCallback = CharacterDatabase.AsyncQuery(stmt);
 }
@@ -293,10 +365,8 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket & recv_data)
             uint32 team = Player::TeamForRace(race_);
             switch (team)
             {
-                case ALLIANCE: disabled = mask & (1 << 0);
-                    break;
-                case HORDE: disabled = mask & (1 << 1);
-                    break;
+                case ALLIANCE: disabled = mask & (1 << 0); break;
+                case HORDE:    disabled = mask & (1 << 1); break;
             }
 
             if (disabled)
@@ -407,7 +477,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket & recv_data)
     }
 
     delete _charCreateCallback.GetParam();  // Delete existing if any, to make the callback chain reset to stage 0
-    _charCreateCallback.Reset();
+    //_charCreateCallback.Reset();
     _charCreateCallback.SetParam(new CharacterCreateInfo(name, race_, class_, gender, skin, face, hairStyle, hairColor, facialHair, outfitId, recv_data));
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHECK_NAME);
     stmt->setString(0, name);
@@ -418,7 +488,7 @@ void WorldSession::HandleCharCreateCallback(PreparedQueryResult result, Characte
 {
     /** This is a series of callbacks executed consecutively as a result from the database becomes available.
         This is much more efficient than synchronous requests on packet handler, and much less DoS prone.
-        It also prevents data syncrhonisation errors.
+        It also prevents data synchronization errors.
     */
     switch (_charCreateCallback.GetStage())
     {
@@ -628,7 +698,11 @@ void WorldSession::HandleCharCreateCallback(PreparedQueryResult result, Characte
             }
 
             if (createInfo->Data.rpos() < createInfo->Data.wpos())
-                sLog->outDebug(LOG_FILTER_NETWORKIO, "Character creation %s (account %u) has unhandled tail data.", createInfo->Name.c_str(), GetAccountId());
+            {
+                uint8 unk;
+                createInfo->Data >> unk;
+                sLog->outDebug(LOG_FILTER_NETWORKIO, "Character creation %s (account %u) has unhandled tail data: [%u]", createInfo->Name.c_str(), GetAccountId(), unk);
+            }
 
             Player newChar(this);
             newChar.GetMotionMaster()->Initialize();
@@ -818,6 +892,16 @@ void WorldSession::HandleWorldLoginOpcode(WorldPacket& recv_data)
     recv_data >> unk >> unk1;
 }
 
+/*void WorldSession::HandleLoadScreenOpcode(WorldPacket& recvPacket)
+{
+    sLog->outStaticDebug("WORLD: Recvd CMSG_LOAD_SCREEN");
+    uint8 unkMask; // Loading start: 0x80, loading end: 0x0
+    uint32 mapID;
+    recvPacket >> unkMask >> mapID;
+
+    // TODO: Do something with this packet
+}*/
+
 void WorldSession::HandlePlayerLoginOpcode(WorldPacket & recv_data)
 {
     if (PlayerLoading() || GetPlayer() != NULL)
@@ -831,7 +915,22 @@ void WorldSession::HandlePlayerLoginOpcode(WorldPacket & recv_data)
 
     sLog->outStaticDebug("WORLD: Recvd Player Logon Message");
 
-    recv_data >> playerGuid;
+    BitStream mask = recv_data.ReadBitStream(8);
+
+    ByteBuffer bytes(8, true);
+
+    recv_data.ReadXorByte(mask[6], bytes[5]);
+    recv_data.ReadXorByte(mask[0], bytes[0]);
+    recv_data.ReadXorByte(mask[4], bytes[3]);
+    recv_data.ReadXorByte(mask[1], bytes[4]);
+    recv_data.ReadXorByte(mask[2], bytes[7]);
+    recv_data.ReadXorByte(mask[5], bytes[2]);
+    recv_data.ReadXorByte(mask[7], bytes[6]);
+    recv_data.ReadXorByte(mask[3], bytes[1]);
+
+    playerGuid = BitConverter::ToUInt64(bytes);
+
+    sLog->outDebug(LOG_FILTER_NETWORKIO, "Character (Guid: %u) logging in", GUID_LOPART(playerGuid));
 
     if (!CharCanLogin(GUID_LOPART(playerGuid)))
     {
@@ -885,9 +984,25 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     LoadAccountData(holder->GetPreparedResult(PLAYER_LOGIN_QUERY_LOADACCOUNTDATA), PER_CHARACTER_CACHE_MASK);
     SendAccountDataTimes(PER_CHARACTER_CACHE_MASK);
 
-    data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 2);         // added in 2.2.0
-    data << uint8(2);                                       // unknown value
-    data << uint8(0);                                       // enable(1)/disable(0) voice chat interface in client
+    data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 34);         // added in 2.2.0
+    data << uint8(2);     // SystemStatus
+    data << uint32(1);    // Unknown, Mostly 1
+    data << uint32(1);    // Unknown, Mostly 1
+    data << uint32(2);    // Unknown, Mostly same as SystemStatus, but seen other values
+    data << uint32(0);    // Unknown, Hmm???
+
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(false); // Unknown
+    data.WriteBit(true);  // Unknown
+    data.WriteBit(false); // EnableVoiceChat, not sure
+    data.WriteBit(false); // Unknown
+
+    data << uint32(1);    // Only seen 1
+    data << uint32(0);    // Unknown, like random values
+    data << uint32(0xA);  // Only seen 10
+    data << uint32(0x3C); // Only seen 60
+
     SendPacket(&data);
 
     // Send MOTD
